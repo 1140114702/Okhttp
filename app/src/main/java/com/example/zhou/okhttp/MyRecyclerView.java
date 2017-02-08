@@ -79,12 +79,13 @@ public class MyRecyclerView extends AppCompatActivity {
             super.handleMessage(msg);
 
             if (msg.what == 0){
-                MyRecycleAdapter adapter = new MyRecycleAdapter(MyRecyclerView.this, list);
+                final MyRecycleAdapter adapter = new MyRecycleAdapter(MyRecyclerView.this, list);
                 mRecyclerView.setAdapter(adapter);
                 adapter.setOnRVItemClickListener(new MyRecycleAdapter.OnRVItemClickListener() {
                     @Override
                     public void setOnItemClick(View view, int position) {
-                        Toast.makeText(MyRecyclerView.this, ""+position, Toast.LENGTH_SHORT).show();
+                        adapter.removeData(position);
+                        Toast.makeText(MyRecyclerView.this, "remove"+position, Toast.LENGTH_SHORT).show();
                     }
                 });
             }

@@ -63,6 +63,11 @@ public class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.MyVi
         return list.size();
     }
 
+    public void removeData (int i) {
+        list.remove(i);
+        notifyItemRemoved(i);
+    }
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 
