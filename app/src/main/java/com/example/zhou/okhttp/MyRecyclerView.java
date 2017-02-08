@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -29,29 +30,20 @@ public class MyRecyclerView extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private List<RecyclerBean.ResultBean.DataBean> list = new ArrayList<>();
-//    private int[] imageViews={R.mipmap.image1,R.mipmap.image2,R.mipmap.image5,R.mipmap.image3,R.mipmap.image4};
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.my_recyclerview);
         requestData();
-//        setData();
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
     }
 
-//    private void setData() {
-//        for (int i = 0; i < list.size(); i++) {
-//            RecyclerBean.ResultBean.DataBean bean = new RecyclerBean.ResultBean.DataBean();
-//            list.add(bean);
-//        }
-//    }
-
     private void requestData() {
-        String url = "http://v.juhe.cn/toutiao/index?type=top&key=fac96";
+        String url = "http://v.juhe.cn/toutiao/index?type=top&key=f73e78527001c8928b0788683852ac96";
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder()
                 .url(url)
@@ -86,8 +78,16 @@ public class MyRecyclerView extends AppCompatActivity {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
 
-            if (msg.what == 0)
-                mRecyclerView.setAdapter(new MyRecycleAdapter(MyRecyclerView.this, list));
+            if (msg.what == 0){
+                MyRecycleAdapter adapter = new MyRecycleAdapter(MyRecyclerView.this, list);
+                mRecyclerView.setAdapter(adapter);
+                adapter.setOnRVItemClickListener(new MyRecycleAdapter.OnRVItemClickListener() {
+                    @Override
+                    public void setOnItemClick(View view, int position) {
+                        Toast.makeText(MyRecyclerView.this, ""+position, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
 
             else Toast.makeText(MyRecyclerView.this, "keybudui", Toast.LENGTH_LONG).show();
         }

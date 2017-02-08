@@ -27,23 +27,41 @@ public class MyRecycleAdapter extends RecyclerView.Adapter<MyRecycleAdapter.MyVi
         this.list = list;
     }
 
+    private OnRVItemClickListener onRVItemClickListener;
+
+    public void setOnRVItemClickListener(OnRVItemClickListener onRVItemClickListener) {
+        this.onRVItemClickListener = onRVItemClickListener;
+    }
+
+    public interface OnRVItemClickListener {
+        void setOnItemClick(View view, int position);
+    }
+
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyViewHolder viewHolder =new MyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.recyclerview_item, null));
+        MyViewHolder viewHolder = new MyViewHolder(LayoutInflater.from(mContext).inflate(R.layout.recyclerview_item, null));
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        DataBean bean=list.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        DataBean bean = list.get(position);
         holder.setDate(bean);
+        if (onRVItemClickListener != null) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int pos = holder.getLayoutPosition();
+                    onRVItemClickListener.setOnItemClick(holder.itemView, pos);
+                }
+            });
+        }
     }
 
     @Override
     public int getItemCount() {
         return list.size();
     }
-
 
 
     class MyViewHolder extends RecyclerView.ViewHolder {
